@@ -1,11 +1,11 @@
-// computer play function
+// computer pick random 
 function computerPlay(){
     const possibleChoices = ["rock" , "paper" , "scissors"];
     return possibleChoices[Math.floor(Math.random()*possibleChoices.length)];
 }
 
-// play round function
 
+// decide who is the round winner
 function playRound(playerSelection, computerSelection){
 
     let winner;
@@ -51,9 +51,11 @@ function playRound(playerSelection, computerSelection){
     return gameResult;
 }
 
+// decide who is the entire game winner
 function checkWinner(playerScore, computerScore){
 
     let returnMessage;
+
     if(computerScore == playerScore){
       returnMessage = `${playerScore}-${computerScore} Draw`;
     }else if(playerScore > computerScore){
@@ -65,7 +67,7 @@ function checkWinner(playerScore, computerScore){
     return returnMessage;
 }
 
-//game
+//starts and handle game rounds
 function game(){
 
     let computerScore = 0;
