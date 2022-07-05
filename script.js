@@ -1,3 +1,13 @@
+// necessary variables 
+let playerScore = 0;
+let computerScore = 0;
+
+let playerScoreContainer = document.querySelector('.player');
+let compterScoreContainer = document.querySelector('.bot');
+let roundWinnerContainer = document.querySelector('.roundwinner');
+let finalResultContainer = document.querySelector('.finalresult');
+
+
 // computer pick random 
 function computerPlay(){
     const possibleChoices = ["rock" , "paper" , "scissors"];
@@ -34,7 +44,7 @@ function playRound(playerSelection, computerSelection){
             }
         }else if(playerSelection.toLowerCase() == "scissors"){
             if(computerSelection == "paper"){
-                returnMessage = `You win! ${computerSelection} beats ${playerSelection}`;
+                returnMessage = `You win! ${playerSelection} beats ${computerSelection}`;
                 winner = "player"
             }else{
                 returnMessage = `You loose! ${computerSelection} beats ${playerSelection}`;
@@ -59,44 +69,42 @@ function checkWinner(playerScore, computerScore){
     if(computerScore == playerScore){
       returnMessage = `${playerScore}-${computerScore} Draw`;
     }else if(playerScore > computerScore){
-        returnMessage = `Win! player-${playerScore} - computer- ${computerScore}`;
+        returnMessage = `Win! player: ${playerScore} - computer: ${computerScore}`;
     }else{
-        returnMessage = `Loose! player-${playerScore} - computer- ${computerScore}`;
+        returnMessage = `Loose! player: ${playerScore} - computer: ${computerScore}`;
     }
 
     return returnMessage;
 }
 
 //starts and handle game rounds
-function game(){
+function game(currentRound){
 
-    let computerScore = 0;
-    let playerScore = 0;
-    let playerSelection;
-    let currentRound;
-    let currentRoundMessage;
-    let currentRoundWinner;
+    finalResultContainer.textContent = "Rock Paper Scissors";
 
-    for(let i = 0; i < 5; i++){
-        playerSelection = prompt("Rock, Paper or Scissors?");
-
-        currentRound = playRound(playerSelection, computerPlay());
-        currentRoundWinner =  currentRound.winner;
-        currentRoundMessage = currentRound.message;
-
-        if(currentRoundWinner == "player"){
-            playerScore++;
-        }else if(currentRoundWinner == "computer"){
+    if(currentRound.winner == "player"){
+        playerScore++;
+    }else if(currentRound.winner == "computer"){
             computerScore++;
-        }else{
-            playerScore = playerScore;
-            computerScore = computerScore;
-        }
-        console.log(currentRoundMessage);
     }
 
-    console.log(checkWinner(playerScore, computerScore));
+    if(playerScore == 5 || computerScore == 5){
+        finalResultContainer.textContent = checkWinner(playerScore, computerScore);
+        playerScore = 0
+        computerScore = 0;
+    }
 
+    playerScoreContainer.textContent = `Player: ${playerScore}`;
+    compterScoreContainer.textContent = `Bot: ${computerScore}`;
+    roundWinnerContainer.textContent = currentRound.message;
 }
 
-console.log(game());
+//  set game buttons as game starters
+const buttons = document.querySelectorAll(".gamebutton");
+
+buttons.forEach(button => {
+    let selection = button.dataset.name;
+    button.addEventListener('click', () => {
+        game(playRound(selection, computerPlay()));
+    });
+});
